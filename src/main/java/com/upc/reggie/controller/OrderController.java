@@ -11,11 +11,10 @@ import com.upc.reggie.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -133,4 +132,32 @@ public class OrderController {
         return R.success(dtoPage);
     }
 
+    @GetMapping("/page")
+    public R<Page
+            > page(Integer page,Integer pageSize){
+        Page<Orders> ordersPage = new Page<>(page,pageSize);
+        orderService.page(ordersPage);
+        Page<OrderDto> orderDtoPage = new Page<>();
+        BeanUtils.copyProperties(ordersPage, orderDtoPage,"records");
+        List<OrderDto> collect = ordersPage.getRecords().stream().map((item) -> {
+            OrderDto orderDto = new OrderDto();
+            Long orderId = item.getId();
+            LambdaQueryWrapper<OrderDetail> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(OrderDetail::getOrderId, orderId);
+            List<OrderDetail> list = orderDetailService.list(queryWrapper);
+            orderDto.setOrderDetails(list);
+            BeanUtils.copyProperties(item, orderDto);
+            return orderDto;
+        }).collect(Collectors.toList());
+        orderDtoPage.setRecords(collect);
+        return R.success(orderDtoPage);
+    }
+
+    @PutMapping
+    public R<String> putStatus(@RequestBody Orders orders){
+        Orders byId = orderService.getById(orders.getId());
+        byId.setStatus(orders.getStatus());
+        orderService.updateById(byId);
+        return R.success("状态修改成功！");
+    }
 }

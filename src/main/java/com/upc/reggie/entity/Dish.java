@@ -14,9 +14,11 @@ import java.math.BigDecimal;
 @Component
 public class Dish implements Serializable {
     private static final long serialVersionUID = 1L;
+
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     private String name;
+
     @JsonSerialize(using = ToStringSerializer.class)
     private Long categoryId;
     private BigDecimal price;
@@ -34,9 +36,11 @@ public class Dish implements Serializable {
     private String updateTime;
 
     @TableField(fill = FieldFill.INSERT)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long createUser;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long updateUser;
 
     private Integer isDeleted;
