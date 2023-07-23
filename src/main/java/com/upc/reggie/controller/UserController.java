@@ -8,10 +8,12 @@ import com.upc.reggie.utils.SMSUtils;
 import com.upc.reggie.utils.ValidateCodeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/user")
@@ -19,14 +21,16 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @PostMapping("/sendMsg")
-    public R<String> sendMsg(@RequestBody User user, HttpSession httpSession){
+    public R<String> sendMsg(@RequestBody User user){
         String phone = user.getPhone();
         log.info("phone:{}",phone);
         Integer code = ValidateCodeUtils.generateValidateCode(4);
         log.info("code:{}",code);
-        httpSession.setAttribute("code", code);
+        redisTemplate.opsForValue().set("code", code,5, TimeUnit.MINUTES);
 //        try {
 //            SMSUtils.sendMessage(phone,code.toString());
 //        } catch (Exception e) {
@@ -40,7 +44,7 @@ public class UserController {
     public R<String> login(@RequestBody Map map, HttpSession session){
         String phone = (String) map.get("phone");
         Integer code = Integer.parseInt((String) map.get("code"));
-        Integer codeTrue = (Integer) session.getAttribute("code");
+        Integer codeTrue = (Integer) redisTemplate.opsForValue().get("code");
         if (!code.equals(codeTrue)){
             return R.error("登陆失败");
         }
