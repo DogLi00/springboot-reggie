@@ -3,7 +3,6 @@ package com.upc.reggie.interceptor;
 import com.alibaba.fastjson.JSON;
 import com.upc.reggie.common.R;
 import com.upc.reggie.common.ThreadLocalUtils;
-import com.upc.reggie.entity.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -14,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+//        String uri = request.getRequestURL();
+
         Long employeeId = (Long) request.getSession().getAttribute("employee");
         if (employeeId!=null){
             ThreadLocalUtils.setCurrentId(employeeId);

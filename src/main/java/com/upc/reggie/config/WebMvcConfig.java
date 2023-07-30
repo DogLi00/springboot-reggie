@@ -30,7 +30,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                         ,"/user/login"
                         ,"/user/sendMsgApi"
                         ,"/user/sendMsg"
-//                        ,"/backend/page/upload.html"
                 );
     }
 }

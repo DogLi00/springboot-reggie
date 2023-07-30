@@ -61,7 +61,7 @@ public class UserController {
             queryWrapper1.eq(User::getPhone,phone);
             user = userService.getOne(queryWrapper1);
         }
-                session.setAttribute("user", user.getId());
+        session.setAttribute("user", user.getId());
         return R.success("登陆成功");
     }
 
