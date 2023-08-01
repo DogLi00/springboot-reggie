@@ -6,6 +6,10 @@ import com.upc.reggie.entity.User;
 import com.upc.reggie.service.UserService;
 import com.upc.reggie.utils.SMSUtils;
 import com.upc.reggie.utils.ValidateCodeUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/user")
 @Slf4j
+@Api("用户接口")
 public class UserController {
     @Autowired
     private UserService userService;

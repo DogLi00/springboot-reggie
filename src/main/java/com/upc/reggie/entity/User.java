@@ -2,6 +2,8 @@ package com.upc.reggie.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -13,10 +15,12 @@ import com.baomidou.mybatisplus.annotation.TableId;
  * 用户信息
  */
 @Data
+@ApiModel("用户类")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @JsonSerialize(using = ToStringSerializer.class)
+    @ApiModelProperty("用户Id")
     private Long id;
 
 
