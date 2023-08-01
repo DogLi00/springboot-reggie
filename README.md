@@ -1,5 +1,5 @@
 # 目前：
-# springboot-reggie V2
+# springboot-reggie V3
 
 # springboot-reggie V1
 此项目完成reggie买卖的黑马项目中的未完成的功能
@@ -14,4 +14,6 @@
 准备：
   通过实现读写分离功能（通过Mysql配置实现，配置本地Windows数据库和远程Linux两个数据库）
 
-有问题的同学欢迎加q：2702096607
+# springboot-reggie V3
+  V2分支中，已加入ShardingJDBC框架实现的Mysql读写分离，Master负责写，Slave负责读。
+  V2分支中，以加入Knife4j框架实现的Swagger，自动生成文档。
